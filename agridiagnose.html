@@ -1,0 +1,1183 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AgriDiagnose - Panduan Masalah Pertanian</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            line-height: 1.6;
+            color: #333;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+        .header {
+            background: rgba(255, 255, 255, 0.95);
+            padding: 1rem 0;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            margin-bottom: 2rem;
+            border-radius: 10px;
+        }
+
+        .header h1 {
+            text-align: center;
+            color: #2c5530;
+            font-size: 2.5rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .header p {
+            text-align: center;
+            color: #666;
+            font-size: 1.1rem;
+        }
+
+        .page {
+            display: none;
+            background: rgba(255, 255, 255, 0.95);
+            border-radius: 15px;
+            padding: 2rem;
+            box-shadow: 0 8px 32px rgba(0,0,0,0.1);
+            backdrop-filter: blur(10px);
+        }
+
+        .page.active {
+            display: block;
+        }
+
+        .btn {
+            background: linear-gradient(45deg, #4CAF50, #45a049);
+            color: white;
+            padding: 12px 30px;
+            border: none;
+            border-radius: 25px;
+            cursor: pointer;
+            font-size: 16px;
+            margin: 10px;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.2);
+        }
+
+        .btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(0,0,0,0.3);
+        }
+
+        .btn-secondary {
+            background: linear-gradient(45deg, #2196F3, #1976D2);
+        }
+
+        .btn-danger {
+            background: linear-gradient(45deg, #f44336, #d32f2f);
+        }
+
+        .form-group {
+            margin-bottom: 1.5rem;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 0.5rem;
+            font-weight: bold;
+            color: #2c5530;
+        }
+
+        .form-group input,
+        .form-group select,
+        .form-group textarea {
+            width: 100%;
+            padding: 12px;
+            border: 2px solid #ddd;
+            border-radius: 8px;
+            font-size: 16px;
+            transition: border-color 0.3s ease;
+        }
+
+        .form-group input:focus,
+        .form-group select:focus,
+        .form-group textarea:focus {
+            outline: none;
+            border-color: #4CAF50;
+            box-shadow: 0 0 0 3px rgba(76, 175, 80, 0.1);
+        }
+
+        .card {
+            background: white;
+            border-radius: 10px;
+            padding: 1.5rem;
+            margin-bottom: 1.5rem;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+            border-left: 4px solid #4CAF50;
+        }
+
+        .grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 2rem;
+            margin: 2rem 0;
+        }
+
+        .diagnosis-result {
+            background: linear-gradient(135deg, #e8f5e8, #f1f8e9);
+            border: 2px solid #4CAF50;
+            border-radius: 15px;
+            padding: 2rem;
+            margin: 2rem 0;
+        }
+
+        .diagnosis-result h3 {
+            color: #2c5530;
+            margin-bottom: 1rem;
+            font-size: 1.5rem;
+        }
+
+        .severity {
+            display: inline-block;
+            padding: 5px 15px;
+            border-radius: 20px;
+            color: white;
+            font-weight: bold;
+            margin: 10px 0;
+        }
+
+        .severity.ringan { background: #4CAF50; }
+        .severity.sedang { background: #FF9800; }
+        .severity.berat { background: #f44336; }
+
+        .nav-buttons {
+            text-align: center;
+            margin: 2rem 0;
+        }
+
+        .checkbox-group {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 10px;
+            margin: 1rem 0;
+        }
+
+        .checkbox-item {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .login-form {
+            max-width: 400px;
+            margin: 2rem auto;
+            background: white;
+            padding: 2rem;
+            border-radius: 15px;
+            box-shadow: 0 8px 32px rgba(0,0,0,0.2);
+        }
+
+        .hero-section {
+            text-align: center;
+            padding: 3rem 0;
+            background: linear-gradient(135deg, rgba(255,255,255,0.9), rgba(240,255,240,0.9));
+            border-radius: 20px;
+            margin-bottom: 2rem;
+        }
+
+        .hero-section h2 {
+            font-size: 2.5rem;
+            color: #2c5530;
+            margin-bottom: 1rem;
+        }
+
+        .hero-section p {
+            font-size: 1.2rem;
+            color: #666;
+            margin-bottom: 2rem;
+        }
+
+        .feature-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 2rem;
+            margin: 3rem 0;
+        }
+
+        .feature-card {
+            background: white;
+            padding: 2rem;
+            border-radius: 15px;
+            text-align: center;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.1);
+            transition: transform 0.3s ease;
+        }
+
+        .feature-card:hover {
+            transform: translateY(-5px);
+        }
+
+        .feature-card h3 {
+            color: #2c5530;
+            margin-bottom: 1rem;
+        }
+
+        .history-item {
+            background: white;
+            border-radius: 10px;
+            padding: 1.5rem;
+            margin-bottom: 1rem;
+            border-left: 4px solid #4CAF50;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+
+        .history-date {
+            color: #666;
+            font-size: 0.9rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .admin-stats {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 1rem;
+            margin-bottom: 2rem;
+        }
+
+        .stat-card {
+            background: linear-gradient(135deg, #4CAF50, #45a049);
+            color: white;
+            padding: 1.5rem;
+            border-radius: 10px;
+            text-align: center;
+        }
+
+        .stat-number {
+            font-size: 2rem;
+            font-weight: bold;
+        }
+
+        .data-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 1rem 0;
+            background: white;
+            border-radius: 10px;
+            overflow: hidden;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+        }
+
+        .data-table th,
+        .data-table td {
+            padding: 12px;
+            text-align: left;
+            border-bottom: 1px solid #ddd;
+        }
+
+        .data-table th {
+            background: #4CAF50;
+            color: white;
+        }
+
+        .data-table tr:hover {
+            background: #f5f5f5;
+        }
+
+        .education-article {
+            background: white;
+            border-radius: 10px;
+            padding: 1.5rem;
+            margin-bottom: 1.5rem;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+        }
+
+        .article-title {
+            color: #2c5530;
+            font-size: 1.3rem;
+            margin-bottom: 1rem;
+        }
+
+        .article-content {
+            color: #666;
+            line-height: 1.8;
+        }
+
+        .logout-btn {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            background: #f44336;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 20px;
+            cursor: pointer;
+            font-size: 14px;
+        }
+
+        @media (max-width: 768px) {
+            .header h1 {
+                font-size: 2rem;
+            }
+            
+            .hero-section h2 {
+                font-size: 2rem;
+            }
+            
+            .container {
+                padding: 10px;
+            }
+            
+            .page {
+                padding: 1rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header class="header">
+            <h1>🌱 AgriDiagnose</h1>
+            <p>Platform Panduan Masalah Pertanian untuk Petani Indonesia</p>
+        </header>
+
+        <!-- Landing Page -->
+        <div id="landing" class="page active">
+            <div class="hero-section">
+                <h2>Selamat Datang di AgriDiagnose</h2>
+                <p>Solusi cerdas untuk mendiagnosa penyakit tanaman dan hama secara akurat</p>
+                <div class="nav-buttons">
+                    <button class="btn" onclick="showLogin('user')">🧑‍🌾 Masuk sebagai Petani</button>
+                    <button class="btn btn-secondary" onclick="showLogin('admin')">⚙️ Masuk sebagai Admin</button>
+                </div>
+            </div>
+
+            <div class="feature-grid">
+                <div class="feature-card">
+                    <h3>🔍 Diagnosa Akurat</h3>
+                    <p>Identifikasi penyakit tanaman berdasarkan gejala visual dengan database lengkap</p>
+                </div>
+                <div class="feature-card">
+                    <h3>💊 Solusi Tepat</h3>
+                    <p>Rekomendasi obat dan treatment yang sesuai untuk setiap jenis penyakit</p>
+                </div>
+                <div class="feature-card">
+                    <h3>📚 Edukasi Pertanian</h3>
+                    <p>Artikel dan panduan lengkap untuk meningkatkan pengetahuan bertani</p>
+                </div>
+                <div class="feature-card">
+                    <h3>📊 Riwayat Lengkap</h3>
+                    <p>Simpan dan pantau riwayat diagnosa untuk monitoring jangka panjang</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Login Page -->
+        <div id="login" class="page">
+            <div class="login-form">
+                <h2 id="loginTitle">Login</h2>
+                <div class="form-group">
+                    <label for="username">Username:</label>
+                    <input type="text" id="username" required>
+                </div>
+                <div class="form-group">
+                    <label for="password">Password:</label>
+                    <input type="password" id="password" required>
+                </div>
+                <div class="nav-buttons">
+                    <button class="btn" onclick="login()">Masuk</button>
+                    <button class="btn btn-secondary" onclick="showPage('landing')">Kembali</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- User Dashboard -->
+        <div id="userDashboard" class="page">
+            <button class="logout-btn" onclick="logout()">Logout</button>
+            
+            <h2>Dashboard Petani</h2>
+            
+            <div class="grid">
+                <div class="card">
+                    <h3>🔍 Diagnosa Tanaman</h3>
+                    <p>Identifikasi penyakit atau hama pada tanaman Anda</p>
+                    <button class="btn" onclick="showPage('diagnosis')">Mulai Diagnosa</button>
+                </div>
+                
+                <div class="card">
+                    <h3>📊 Riwayat Diagnosa</h3>
+                    <p>Lihat hasil diagnosa sebelumnya</p>
+                    <button class="btn" onclick="showPage('history')">Lihat Riwayat</button>
+                </div>
+                
+                <div class="card">
+                    <h3>📚 Pusat Edukasi</h3>
+                    <p>Artikel dan tips pertanian</p>
+                    <button class="btn" onclick="showPage('education')">Baca Artikel</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Diagnosis Page -->
+        <div id="diagnosis" class="page">
+            <button class="logout-btn" onclick="logout()">Logout</button>
+            
+            <h2>🔍 Diagnosa Penyakit Tanaman</h2>
+            
+            <div class="form-group">
+                <label for="plantType">Jenis Tanaman:</label>
+                <select id="plantType" required>
+                    <option value="">Pilih jenis tanaman</option>
+                    <option value="padi">Padi</option>
+                    <option value="cabai">Cabai</option>
+                    <option value="tomat">Tomat</option>
+                    <option value="jagung">Jagung</option>
+                    <option value="kedelai">Kedelai</option>
+                </select>
+            </div>
+            
+            <div class="form-group">
+                <label>Gejala yang Diamati:</label>
+                <div class="checkbox-group">
+                    <div class="checkbox-item">
+                        <input type="checkbox" id="daun_kuning" value="daun_kuning">
+                        <label for="daun_kuning">Daun menguning</label>
+                    </div>
+                    <div class="checkbox-item">
+                        <input type="checkbox" id="bercak_daun" value="bercak_daun">
+                        <label for="bercak_daun">Bercak pada daun</label>
+                    </div>
+                    <div class="checkbox-item">
+                        <input type="checkbox" id="daun_layu" value="daun_layu">
+                        <label for="daun_layu">Daun layu</label>
+                    </div>
+                    <div class="checkbox-item">
+                        <input type="checkbox" id="lubang_daun" value="lubang_daun">
+                        <label for="lubang_daun">Lubang pada daun</label>
+                    </div>
+                    <div class="checkbox-item">
+                        <input type="checkbox" id="batang_busuk" value="batang_busuk">
+                        <label for="batang_busuk">Batang membusuk</label>
+                    </div>
+                    <div class="checkbox-item">
+                        <input type="checkbox" id="buah_busuk" value="buah_busuk">
+                        <label for="buah_busuk">Buah membusuk</label>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="form-group">
+                <label for="additionalSymptoms">Gejala Tambahan:</label>
+                <textarea id="additionalSymptoms" rows="3" placeholder="Deskripsikan gejala lain yang Anda amati..."></textarea>
+            </div>
+            
+            <div class="form-group">
+                <label for="plantImage">Upload Gambar (Opsional):</label>
+                <input type="file" id="plantImage" accept="image/*">
+            </div>
+            
+            <div class="nav-buttons">
+                <button class="btn" onclick="performDiagnosis()">🔍 Mulai Diagnosa</button>
+                <button class="btn btn-secondary" onclick="showPage('userDashboard')">Kembali</button>
+            </div>
+            
+            <div id="diagnosisResult"></div>
+        </div>
+
+        <!-- History Page -->
+        <div id="history" class="page">
+            <button class="logout-btn" onclick="logout()">Logout</button>
+            
+            <h2>📊 Riwayat Diagnosa</h2>
+            
+            <div class="nav-buttons">
+                <button class="btn btn-danger" onclick="clearHistory()">🗑️ Hapus Semua Riwayat</button>
+                <button class="btn btn-secondary" onclick="showPage('userDashboard')">Kembali</button>
+            </div>
+            
+            <div id="historyList"></div>
+        </div>
+
+        <!-- Education Page -->
+        <div id="education" class="page">
+            <button class="logout-btn" onclick="logout()">Logout</button>
+            
+            <h2>📚 Pusat Edukasi Pertanian</h2>
+            
+            <div class="nav-buttons">
+                <button class="btn btn-secondary" onclick="showPage('userDashboard')">Kembali</button>
+            </div>
+            
+            <div id="educationContent">
+                <div class="education-article">
+                    <h3 class="article-title">🌱 Tips Mencegah Penyakit Tanaman</h3>
+                    <div class="article-content">
+                        <p>Pencegahan adalah kunci utama dalam mengelola kebun yang sehat. Beberapa tips penting:</p>
+                        <p><strong>1. Rotasi Tanaman:</strong> Ganti jenis tanaman setiap musim untuk memutus siklus hama dan penyakit.</p>
+                        <p><strong>2. Drainase yang Baik:</strong> Pastikan air tidak menggenang untuk mencegah jamur dan bakteri.</p>
+                        <p><strong>3. Pemupukan Seimbang:</strong> Gunakan pupuk sesuai kebutuhan tanaman agar tidak mudah terserang penyakit.</p>
+                    </div>
+                </div>
+                
+                <div class="education-article">
+                    <h3 class="article-title">🐛 Mengenal Hama Tanaman Umum</h3>
+                    <div class="article-content">
+                        <p>Hama tanaman dapat merusak hasil panen jika tidak ditangani dengan tepat:</p>
+                        <p><strong>Aphid:</strong> Serangga kecil yang menghisap cairan tanaman. Solusi: semprotkan air sabun atau gunakan ladybug sebagai predator alami.</p>
+                        <p><strong>Ulat Grayak:</strong> Merusak daun dengan cara memakan. Solusi: petik manual atau gunakan pestisida organik.</p>
+                        <p><strong>Kutu Putih:</strong> Menyebabkan daun menguning. Solusi: gunakan minyak neem atau alkohol.</p>
+                    </div>
+                </div>
+                
+                <div class="education-article">
+                    <h3 class="article-title">💧 Teknik Penyiraman yang Benar</h3>
+                    <div class="article-content">
+                        <p>Penyiraman yang tepat sangat penting untuk kesehatan tanaman:</p>
+                        <p><strong>Waktu Terbaik:</strong> Pagi hari (06:00-08:00) atau sore hari (16:00-18:00).</p>
+                        <p><strong>Frekuensi:</strong> Sesuaikan dengan jenis tanaman dan cuaca. Tanaman daun membutuhkan lebih banyak air.</p>
+                        <p><strong>Cara Penyiraman:</strong> Siram pada bagian akar, hindari membasahi daun berlebihan untuk mencegah jamur.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Admin Dashboard -->
+        <div id="adminDashboard" class="page">
+            <button class="logout-btn" onclick="logout()">Logout</button>
+            
+            <h2>⚙️ Dashboard Admin</h2>
+            
+            <div class="admin-stats">
+                <div class="stat-card">
+                    <div class="stat-number" id="totalDiseases">12</div>
+                    <div>Total Penyakit</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-number" id="totalDiagnoses">45</div>
+                    <div>Total Diagnosa</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-number" id="totalArticles">8</div>
+                    <div>Artikel Edukasi</div>
+                </div>
+            </div>
+            
+            <div class="grid">
+                <div class="card">
+                    <h3>🦠 Manajemen Penyakit</h3>
+                    <p>Kelola database penyakit dan solusi</p>
+                    <button class="btn" onclick="showPage('manageDiseases')">Kelola Penyakit</button>
+                </div>
+                
+                <div class="card">
+                    <h3>📊 Laporan Diagnosa</h3>
+                    <p>Lihat laporan diagnosa pengguna</p>
+                    <button class="btn" onclick="showPage('reports')">Lihat Laporan</button>
+                </div>
+                
+                <div class="card">
+                    <h3>📚 Manajemen Artikel</h3>
+                    <p>Kelola konten edukasi</p>
+                    <button class="btn" onclick="showPage('manageArticles')">Kelola Artikel</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Manage Diseases Page -->
+        <div id="manageDiseases" class="page">
+            <button class="logout-btn" onclick="logout()">Logout</button>
+            
+            <h2>🦠 Manajemen Data Penyakit</h2>
+            
+            <div class="nav-buttons">
+                <button class="btn" onclick="showAddDiseaseForm()">➕ Tambah Penyakit Baru</button>
+                <button class="btn btn-secondary" onclick="showPage('adminDashboard')">Kembali</button>
+            </div>
+            
+            <div id="addDiseaseForm" style="display: none;">
+                <div class="card">
+                    <h3>Tambah Penyakit Baru</h3>
+                    <div class="form-group">
+                        <label for="diseaseName">Nama Penyakit:</label>
+                        <input type="text" id="diseaseName" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="affectedPlants">Tanaman Terdampak:</label>
+                        <input type="text" id="affectedPlants" placeholder="Contoh: padi, jagung, tomat" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="diseaseSymptoms">Gejala/Ciri-ciri:</label>
+                        <textarea id="diseaseSymptoms" rows="3" required></textarea>
+                    </div>
+                    <div class="form-group">
+                        <label for="diseaseSolution">Solusi dan Rekomendasi:</label>
+                        <textarea id="diseaseSolution" rows="4" required></textarea>
+                    </div>
+                    <div class="form-group">
+                        <label for="diseaseSeverity">Tingkat Keparahan:</label>
+                        <select id="diseaseSeverity" required>
+                            <option value="ringan">Ringan</option>
+                            <option value="sedang">Sedang</option>
+                            <option value="berat">Berat</option>
+                        </select>
+                    </div>
+                    <div class="nav-buttons">
+                        <button class="btn" onclick="addDisease()">💾 Simpan</button>
+                        <button class="btn btn-secondary" onclick="hideAddDiseaseForm()">Batal</button>
+                    </div>
+                </div>
+            </div>
+            
+            <div id="diseasesList"></div>
+        </div>
+
+        <!-- Reports Page -->
+        <div id="reports" class="page">
+            <button class="logout-btn" onclick="logout()">Logout</button>
+            
+            <h2>📊 Laporan Diagnosa Pengguna</h2>
+            
+            <div class="nav-buttons">
+                <button class="btn btn-secondary" onclick="showPage('adminDashboard')">Kembali</button>
+            </div>
+            
+            <div id="reportsList"></div>
+        </div>
+
+        <!-- Manage Articles Page -->
+        <div id="manageArticles" class="page">
+            <button class="logout-btn" onclick="logout()">Logout</button>
+            
+            <h2>📚 Manajemen Artikel Edukasi</h2>
+            
+            <div class="nav-buttons">
+                <button class="btn" onclick="showAddArticleForm()">➕ Tambah Artikel Baru</button>
+                <button class="btn btn-secondary" onclick="showPage('adminDashboard')">Kembali</button>
+            </div>
+            
+            <div id="addArticleForm" style="display: none;">
+                <div class="card">
+                    <h3>Tambah Artikel Baru</h3>
+                    <div class="form-group">
+                        <label for="articleTitle">Judul Artikel:</label>
+                        <input type="text" id="articleTitle" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="articleContent">Isi Artikel:</label>
+                        <textarea id="articleContent" rows="6" required></textarea>
+                    </div>
+                    <div class="nav-buttons">
+                        <button class="btn" onclick="addArticle()">💾 Simpan</button>
+                        <button class="btn btn-secondary" onclick="hideAddArticleForm()">Batal</button>
+                    </div>
+                </div>
+            </div>
+            
+            <div id="articlesList"></div>
+        </div>
+    </div>
+
+    <script>
+        // Data Storage
+        const defaultDiseases = [
+            {
+                id: 1,
+                name: "Blast Padi",
+                plants: ["padi"],
+                symptoms: ["bercak_daun", "daun_kuning"],
+                description: "Penyakit jamur yang menyerang daun, batang, dan malai padi",
+                solution: "Semprot dengan fungisida berbahan aktif tricyclazole atau isoprothiolane. Atur jarak tanam untuk sirkulasi udara yang baik.",
+                severity: "berat"
+            },
+            {
+                id: 2,
+                name: "Antraknosa Cabai",
+                plants: ["cabai"],
+                symptoms: ["bercak_daun", "buah_busuk"],
+                description: "Penyakit jamur yang menyebabkan bercak pada daun dan buah membusuk",
+                solution: "Gunakan fungisida mankozeb 80% atau klorotalonil. Buang bagian tanaman yang terinfeksi.",
+                severity: "sedang"
+            },
+            {
+                id: 3,
+                name: "Layu Fusarium",
+                plants: ["tomat", "cabai"],
+                symptoms: ["daun_layu", "daun_kuning", "batang_busuk"],
+                description: "Penyakit jamur tanah yang menyebabkan layu pada tanaman",
+                solution: "Gunakan varietas tahan, perbaiki drainase tanah, aplikasi Trichoderma sp.",
+                severity: "berat"
+            },
+            {
+                id: 4,
+                name: "Ulat Grayak",
+                plants: ["jagung", "padi"],
+                symptoms: ["lubang_daun"],
+                description: "Hama ulat yang memakan daun tanaman muda",
+                solution: "Semprot dengan insektisida emamectin benzoat atau lakukan pengendalian manual.",
+                severity: "sedang"
+            }
+        ];
+
+        const defaultArticles = [
+            {
+                id: 1,
+                title: "🌱 Tips Mencegah Penyakit Tanaman",
+                content: "Pencegahan adalah kunci utama dalam mengelola kebun yang sehat. Beberapa tips penting: 1. Rotasi Tanaman: Ganti jenis tanaman setiap musim untuk memutus siklus hama dan penyakit. 2. Drainase yang Baik: Pastikan air tidak menggenang untuk mencegah jamur dan bakteri. 3. Pemupukan Seimbang: Gunakan pupuk sesuai kebutuhan tanaman agar tidak mudah terserang penyakit."
+            },
+            {
+                id: 2,
+                title: "🐛 Mengenal Hama Tanaman Umum",
+                content: "Hama tanaman dapat merusak hasil panen jika tidak ditangani dengan tepat. Aphid: Serangga kecil yang menghisap cairan tanaman. Solusi: semprotkan air sabun atau gunakan ladybug sebagai predator alami. Ulat Grayak: Merusak daun dengan cara memakan. Solusi: petik manual atau gunakan pestisida organik."
+            }
+        ];
+
+        // Initialize data
+        function initializeData() {
+            if (!localStorage.getItem('diseases')) {
+                localStorage.setItem('diseases', JSON.stringify(defaultDiseases));
+            }
+            if (!localStorage.getItem('articles')) {
+                localStorage.setItem('articles', JSON.stringify(defaultArticles));
+            }
+            if (!localStorage.getItem('diagnosisHistory')) {
+                localStorage.setItem('diagnosisHistory', JSON.stringify([]));
+            }
+        }
+
+        // Initialize app
+        window.onload = function() {
+            initializeData();
+            showPage('landing');
+        };
+
+        // Navigation functions
+        function showPage(pageId) {
+            const pages = document.querySelectorAll('.page');
+            pages.forEach(page => page.classList.remove('active'));
+            document.getElementById(pageId).classList.add('active');
+
+            // Load page-specific content
+            if (pageId === 'history') loadHistory();
+            if (pageId === 'manageDiseases') loadDiseasesList();
+            if (pageId === 'reports') loadReports();
+            if (pageId === 'manageArticles') loadArticlesList();
+        }
+
+        function showLogin(userType) {
+            const title = userType === 'admin' ? 'Login Admin' : 'Login Petani';
+            document.getElementById('loginTitle').textContent = title;
+            document.getElementById('loginType').value = userType;
+            showPage('login');
+        }
+
+        // Authentication
+        function login() {
+            const username = document.getElementById('username').value;
+            const password = document.getElementById('password').value;
+            const loginTitle = document.getElementById('loginTitle').textContent;
+
+            // Simple authentication (for demo purposes)
+            if (loginTitle.includes('Admin')) {
+                if (username === 'admin' && password === 'admin123') {
+                    sessionStorage.setItem('userType', 'admin');
+                    showPage('adminDashboard');
+                } else {
+                    alert('Username atau password admin salah!');
+                }
+            } else {
+                if (username === 'petani' && password === 'petani123') {
+                    sessionStorage.setItem('userType', 'user');
+                    showPage('userDashboard');
+                } else {
+                    alert('Username atau password petani salah!\nGunakan: petani / petani123');
+                }
+            }
+        }
+
+        function logout() {
+            sessionStorage.removeItem('userType');
+            document.getElementById('username').value = '';
+            document.getElementById('password').value = '';
+            showPage('landing');
+        }
+
+        // Diagnosis functions
+        function performDiagnosis() {
+            const plantType = document.getElementById('plantType').value;
+            const additionalSymptoms = document.getElementById('additionalSymptoms').value;
+
+            if (!plantType) {
+                alert('Silakan pilih jenis tanaman terlebih dahulu!');
+                return;
+            }
+
+            // Get selected symptoms
+            const symptoms = [];
+            const checkboxes = document.querySelectorAll('.checkbox-item input[type="checkbox"]:checked');
+            checkboxes.forEach(cb => symptoms.push(cb.value));
+
+            if (symptoms.length === 0) {
+                alert('Silakan pilih minimal satu gejala!');
+                return;
+            }
+
+            // Find matching diseases
+            const diseases = JSON.parse(localStorage.getItem('diseases'));
+            const matches = diseases.filter(disease => {
+                return disease.plants.includes(plantType) && 
+                       symptoms.some(symptom => disease.symptoms.includes(symptom));
+            });
+
+            // Display results
+            displayDiagnosisResult(matches, plantType, symptoms, additionalSymptoms);
+
+            // Save to history
+            saveDiagnosisToHistory(plantType, symptoms, additionalSymptoms, matches);
+        }
+
+        function displayDiagnosisResult(matches, plantType, symptoms, additionalSymptoms) {
+            const resultDiv = document.getElementById('diagnosisResult');
+            
+            if (matches.length === 0) {
+                resultDiv.innerHTML = `
+                    <div class="diagnosis-result">
+                        <h3>❌ Tidak Ditemukan Penyakit yang Cocok</h3>
+                        <p>Berdasarkan gejala yang Anda pilih untuk tanaman <strong>${plantType}</strong>, tidak ditemukan penyakit yang cocok dalam database.</p>
+                        <p><strong>Saran:</strong></p>
+                        <ul>
+                            <li>Coba kombinasi gejala yang berbeda</li>
+                            <li>Konsultasikan dengan ahli pertanian setempat</li>
+                            <li>Periksa kondisi lingkungan (kelembaban, drainase, pemupukan)</li>
+                        </ul>
+                    </div>
+                `;
+                return;
+            }
+
+            // Sort by number of matching symptoms
+            matches.sort((a, b) => {
+                const aMatches = symptoms.filter(s => a.symptoms.includes(s)).length;
+                const bMatches = symptoms.filter(s => b.symptoms.includes(s)).length;
+                return bMatches - aMatches;
+            });
+
+            const bestMatch = matches[0];
+            const matchingSymptoms = symptoms.filter(s => bestMatch.symptoms.includes(s));
+            const confidence = Math.round((matchingSymptoms.length / bestMatch.symptoms.length) * 100);
+
+            resultDiv.innerHTML = `
+                <div class="diagnosis-result">
+                    <h3>🎯 Hasil Diagnosa</h3>
+                    <h4>Penyakit/Hama: <strong>${bestMatch.name}</strong></h4>
+                    <div class="severity ${bestMatch.severity}">Tingkat: ${bestMatch.severity.toUpperCase()}</div>
+                    <div style="background: #e3f2fd; padding: 10px; border-radius: 5px; margin: 10px 0;">
+                        <strong>Akurasi:</strong> ${confidence}% (${matchingSymptoms.length}/${bestMatch.symptoms.length} gejala cocok)
+                    </div>
+                    
+                    <h4>📋 Deskripsi:</h4>
+                    <p>${bestMatch.description}</p>
+                    
+                    <h4>💊 Solusi dan Rekomendasi:</h4>
+                    <p>${bestMatch.solution}</p>
+                    
+                    <h4>⚠️ Catatan Penting:</h4>
+                    <ul>
+                        <li>Gunakan APD saat menyemprot pestisida</li>
+                        <li>Baca petunjuk penggunaan pada kemasan</li>
+                        <li>Semprot pada pagi atau sore hari</li>
+                        <li>Jika tidak ada perbaikan dalam 1-2 minggu, konsultasi dengan ahli</li>
+                    </ul>
+                    
+                    ${matches.length > 1 ? `
+                        <h4>🔍 Kemungkinan Lain:</h4>
+                        ${matches.slice(1, 3).map(match => `
+                            <div style="background: #f5f5f5; padding: 10px; margin: 5px 0; border-radius: 5px;">
+                                <strong>${match.name}</strong> - ${match.description}
+                            </div>
+                        `).join('')}
+                    ` : ''}
+                </div>
+            `;
+        }
+
+        function saveDiagnosisToHistory(plantType, symptoms, additionalSymptoms, matches) {
+            const history = JSON.parse(localStorage.getItem('diagnosisHistory'));
+            const diagnosis = {
+                id: Date.now(),
+                date: new Date().toLocaleString('id-ID'),
+                plantType: plantType,
+                symptoms: symptoms,
+                additionalSymptoms: additionalSymptoms,
+                results: matches,
+                bestMatch: matches.length > 0 ? matches[0] : null
+            };
+            
+            history.unshift(diagnosis);
+            
+            // Keep only last 20 diagnoses
+            if (history.length > 20) {
+                history.splice(20);
+            }
+            
+            localStorage.setItem('diagnosisHistory', JSON.stringify(history));
+        }
+
+        // History functions
+        function loadHistory() {
+            const history = JSON.parse(localStorage.getItem('diagnosisHistory'));
+            const historyDiv = document.getElementById('historyList');
+            
+            if (history.length === 0) {
+                historyDiv.innerHTML = '<div class="card"><p>Belum ada riwayat diagnosa.</p></div>';
+                return;
+            }
+            
+            historyDiv.innerHTML = history.map(item => `
+                <div class="history-item">
+                    <div class="history-date">${item.date}</div>
+                    <h4>Tanaman: ${item.plantType}</h4>
+                    <p><strong>Gejala:</strong> ${item.symptoms.join(', ')}</p>
+                    ${item.additionalSymptoms ? `<p><strong>Catatan:</strong> ${item.additionalSymptoms}</p>` : ''}
+                    ${item.bestMatch ? `
+                        <p><strong>Hasil:</strong> ${item.bestMatch.name} 
+                        <span class="severity ${item.bestMatch.severity}" style="font-size: 0.8em; padding: 2px 8px;">${item.bestMatch.severity}</span></p>
+                    ` : '<p><strong>Hasil:</strong> Tidak ditemukan penyakit yang cocok</p>'}
+                </div>
+            `).join('');
+        }
+
+        function clearHistory() {
+            if (confirm('Apakah Anda yakin ingin menghapus semua riwayat diagnosa?')) {
+                localStorage.setItem('diagnosisHistory', JSON.stringify([]));
+                loadHistory();
+            }
+        }
+
+        // Admin functions
+        function showAddDiseaseForm() {
+            document.getElementById('addDiseaseForm').style.display = 'block';
+        }
+
+        function hideAddDiseaseForm() {
+            document.getElementById('addDiseaseForm').style.display = 'none';
+            clearDiseaseForm();
+        }
+
+        function clearDiseaseForm() {
+            document.getElementById('diseaseName').value = '';
+            document.getElementById('affectedPlants').value = '';
+            document.getElementById('diseaseSymptoms').value = '';
+            document.getElementById('diseaseSolution').value = '';
+            document.getElementById('diseaseSeverity').value = 'ringan';
+        }
+
+        function addDisease() {
+            const name = document.getElementById('diseaseName').value;
+            const plants = document.getElementById('affectedPlants').value.split(',').map(p => p.trim());
+            const symptoms = document.getElementById('diseaseSymptoms').value;
+            const solution = document.getElementById('diseaseSolution').value;
+            const severity = document.getElementById('diseaseSeverity').value;
+
+            if (!name || !plants[0] || !symptoms || !solution) {
+                alert('Semua field harus diisi!');
+                return;
+            }
+
+            const diseases = JSON.parse(localStorage.getItem('diseases'));
+            const newDisease = {
+                id: Date.now(),
+                name: name,
+                plants: plants,
+                symptoms: ['bercak_daun'], // Default symptoms for demo
+                description: symptoms,
+                solution: solution,
+                severity: severity
+            };
+
+            diseases.push(newDisease);
+            localStorage.setItem('diseases', JSON.stringify(diseases));
+            
+            hideAddDiseaseForm();
+            loadDiseasesList();
+            alert('Penyakit berhasil ditambahkan!');
+        }
+
+        function loadDiseasesList() {
+            const diseases = JSON.parse(localStorage.getItem('diseases'));
+            const diseasesDiv = document.getElementById('diseasesList');
+            
+            if (diseases.length === 0) {
+                diseasesDiv.innerHTML = '<div class="card"><p>Belum ada data penyakit.</p></div>';
+                return;
+            }
+            
+            diseasesDiv.innerHTML = `
+                <table class="data-table">
+                    <thead>
+                        <tr>
+                            <th>Nama Penyakit</th>
+                            <th>Tanaman</th>
+                            <th>Tingkat</th>
+                            <th>Aksi</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        ${diseases.map(disease => `
+                            <tr>
+                                <td><strong>${disease.name}</strong><br><small>${disease.description}</small></td>
+                                <td>${disease.plants.join(', ')}</td>
+                                <td><span class="severity ${disease.severity}">${disease.severity}</span></td>
+                                <td>
+                                    <button class="btn btn-danger" onclick="deleteDisease(${disease.id})" style="padding: 5px 10px; font-size: 12px;">Hapus</button>
+                                </td>
+                            </tr>
+                        `).join('')}
+                    </tbody>
+                </table>
+            `;
+        }
+
+        function deleteDisease(diseaseId) {
+            if (confirm('Apakah Anda yakin ingin menghapus penyakit ini?')) {
+                const diseases = JSON.parse(localStorage.getItem('diseases'));
+                const updatedDiseases = diseases.filter(d => d.id !== diseaseId);
+                localStorage.setItem('diseases', JSON.stringify(updatedDiseases));
+                loadDiseasesList();
+            }
+        }
+
+        function loadReports() {
+            const history = JSON.parse(localStorage.getItem('diagnosisHistory'));
+            const reportsDiv = document.getElementById('reportsList');
+            
+            if (history.length === 0) {
+                reportsDiv.innerHTML = '<div class="card"><p>Belum ada laporan diagnosa.</p></div>';
+                return;
+            }
+            
+            // Statistics
+            const totalDiagnoses = history.length;
+            const plantStats = {};
+            const diseaseStats = {};
+            
+            history.forEach(item => {
+                plantStats[item.plantType] = (plantStats[item.plantType] || 0) + 1;
+                if (item.bestMatch) {
+                    diseaseStats[item.bestMatch.name] = (diseaseStats[item.bestMatch.name] || 0) + 1;
+                }
+            });
+            
+            reportsDiv.innerHTML = `
+                <div class="card">
+                    <h3>📊 Statistik Diagnosa</h3>
+                    <p><strong>Total Diagnosa:</strong> ${totalDiagnoses}</p>
+                    
+                    <h4>Tanaman Paling Sering Didiagnosa:</h4>
+                    ${Object.entries(plantStats).sort(([,a], [,b]) => b - a).slice(0, 5).map(([plant, count]) => 
+                        `<p>${plant}: ${count} kali</p>`
+                    ).join('')}
+                    
+                    <h4>Penyakit Paling Sering Ditemukan:</h4>
+                    ${Object.entries(diseaseStats).sort(([,a], [,b]) => b - a).slice(0, 5).map(([disease, count]) => 
+                        `<p>${disease}: ${count} kali</p>`
+                    ).join('')}
+                </div>
+                
+                <div class="card">
+                    <h3>📋 Riwayat Diagnosa Terbaru</h3>
+                    <table class="data-table">
+                        <thead>
+                            <tr>
+                                <th>Tanggal</th>
+                                <th>Tanaman</th>
+                                <th>Hasil</th>
+                                <th>Tingkat</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            ${history.slice(0, 10).map(item => `
+                                <tr>
+                                    <td>${item.date}</td>
+                                    <td>${item.plantType}</td>
+                                    <td>${item.bestMatch ? item.bestMatch.name : 'Tidak ditemukan'}</td>
+                                    <td>${item.bestMatch ? `<span class="severity ${item.bestMatch.severity}">${item.bestMatch.severity}</span>` : '-'}</td>
+                                </tr>
+                            `).join('')}
+                        </tbody>
+                    </table>
+                </div>
+            `;
+        }
+
+        // Article management
+        function showAddArticleForm() {
+            document.getElementById('addArticleForm').style.display = 'block';
+        }
+
+        function hideAddArticleForm() {
+            document.getElementById('addArticleForm').style.display = 'none';
+            document.getElementById('articleTitle').value = '';
+            document.getElementById('articleContent').value = '';
+        }
+
+        function addArticle() {
+            const title = document.getElementById('articleTitle').value;
+            const content = document.getElementById('articleContent').value;
+
+            if (!title || !content) {
+                alert('Judul dan isi artikel harus diisi!');
+                return;
+            }
+
+            const articles = JSON.parse(localStorage.getItem('articles'));
+            const newArticle = {
+                id: Date.now(),
+                title: title,
+                content: content,
+                date: new Date().toLocaleDateString('id-ID')
+            };
+
+            articles.push(newArticle);
+            localStorage.setItem('articles', JSON.stringify(articles));
+            
+            hideAddArticleForm();
+            loadArticlesList();
+            alert('Artikel berhasil ditambahkan!');
+        }
+
+        function loadArticlesList() {
+            const articles = JSON.parse(localStorage.getItem('articles'));
+            const articlesDiv = document.getElementById('articlesList');
+            
+            articlesDiv.innerHTML = articles.map(article => `
+                <div class="card">
+                    <h3>${article.title}</h3>
+                    <p><strong>Tanggal:</strong> ${article.date || 'Tidak diketahui'}</p>
+                    <p>${article.content.substring(0, 200)}...</p>
+                    <button class="btn btn-danger" onclick="deleteArticle(${article.id})">Hapus Artikel</button>
+                </div>
+            `).join('');
+        }
+
+        function deleteArticle(articleId) {
+            if (confirm('Apakah Anda yakin ingin menghapus artikel ini?')) {
+                const articles = JSON.parse(localStorage.getItem('articles'));
+                const updatedArticles = articles.filter(a => a.id !== articleId);
+                localStorage.setItem('articles', JSON.stringify(updatedArticles));
+                loadArticlesList();
+            }
+        }
+    </script>
+
+    <!-- Hidden field for login type -->
+    <input type="hidden" id="loginType" value="">
+</body>
+</html>
